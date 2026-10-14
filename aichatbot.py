@@ -1,3 +1,4 @@
+
 import streamlit as st
 from google import genai
 
@@ -42,7 +43,7 @@ if prompt := st.chat_input("Type your question here..."):
     if client:
       with st.spinner("Thinking..."):
         try:
-          # Call the Gemini model
+          # Call the active gemini-3.5-flash model
           response = client.models.generate_content(
               model="gemini-3.5-flash",
               contents=prompt,
@@ -55,7 +56,11 @@ if prompt := st.chat_input("Type your question here..."):
               {"role": "assistant", "content": bot_reply}
           )
         except Exception as e:
-          st.error(f"An error occurred: {e}")
+          st.warning(
+              "The AI model is temporarily experiencing high traffic (503"
+              " Service Unavailable). Please wait 10 seconds and try clicking"
+              " send again!"
+          )
     else:
       st.warning(
           "Please configure your API key in Streamlit Secrets to enable"
